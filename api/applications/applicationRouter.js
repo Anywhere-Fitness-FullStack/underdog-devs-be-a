@@ -356,6 +356,16 @@ router.put(
   }
 );
 
+// gets mentee Tech Stack by mentee's ID
+router.get('/mentee/teckStack/:id', authRequired, (req, res, next) => {
+  const menteeId = req.params.id;
+  Application.getMenteeTechStack(menteeId)
+    .then(() => {
+      res.status(200).json(res);
+    })
+    .catch(next);
+});
+
 // posts mentee data to DS
 router.post('/dsMenteeData/', authRequired, cacheSignUpData, (req, next) => {
   const formData = req.body;

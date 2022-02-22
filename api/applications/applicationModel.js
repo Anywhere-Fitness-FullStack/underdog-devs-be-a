@@ -78,6 +78,13 @@ function getMenteeIntake(profile_id) {
     .where('p.profile_id', profile_id);
 }
 
+function getMenteeTechStack(mentee_intake_id) {
+  return db('mentee_intake as m')
+    .select('m.tech_stack')
+    .where('mentee_intake_id', mentee_intake_id)
+    .first();
+}
+
 async function insertMenteeIntake(newMenteeIntake) {
   const form = await db('mentee_intake').insert(newMenteeIntake);
   return form;
@@ -114,5 +121,6 @@ module.exports = {
   getMenteeIntake,
   insertMenteeIntake,
   insertMentorIntake,
+  getMenteeTechStack,
   updateApplicationNotes,
 };
