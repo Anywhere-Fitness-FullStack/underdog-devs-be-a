@@ -143,7 +143,7 @@ function validRecTicketID(req, res, next) {
         req.resourceTicket = resourceTicket;
         next();
       } else {
-        res.status(400).json({
+        res.status(404).json({
           message: 'resource_ticket_id Not Found',
         });
       }
