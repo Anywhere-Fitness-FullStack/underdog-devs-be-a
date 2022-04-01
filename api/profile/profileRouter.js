@@ -8,6 +8,7 @@ const {
   superAdminRequired,
 } = require('../middleware/permissionsRequired');
 const { validateUser } = require('../middleware/generalMiddleware');
+const { createProfile } = require('../middleware/profilesMiddleware');
 validateUser;
 
 // gets current user profile
@@ -186,7 +187,7 @@ router.get(
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.post('/', authRequired, async (req, res, next) => {
+router.post('/', authRequired, createProfile, async function (req, res, next) {
   const profile = req.body;
   if (profile) {
     const id = profile.id || 0;
@@ -194,7 +195,7 @@ router.post('/', authRequired, async (req, res, next) => {
       await Profiles.findById(id).then(async (pf) => {
         if (pf == undefined) {
           //profile not found so lets insert it
-          await Profiles.create(profile).then((profile) =>
+          Profiles.create(profile).then((profile) =>
             res
               .status(201)
               .json({ message: 'profile created', profile: profile[0] })

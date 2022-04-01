@@ -5,6 +5,7 @@ const authRequired = require('../../api/middleware/authRequired');
 const profileRouter = require('../../api/profile/profileRouter');
 const handleError = require('../../api/middleware/handleError');
 const { profiles } = require('../../data/seeds/002-profiles');
+// const server = require('../../api/app');
 
 // Reset the test database before and after running tests
 
@@ -36,6 +37,20 @@ const app = express();
 app.use(express.json());
 app.use('/profile', profileRouter);
 app.use(handleError);
+
+// Declare Constants
+
+const { profile: initialProfile } = require('./../../data/seeds/002-profiles');
+//   profile_id: '00ulthapbErVUwVJy4x6',
+//   email: 'llama001@maildrop.cc',
+//   first_name: 'Admin',
+//   last_name: '1',
+//   role_id: 1,
+//   is_active: true,
+//   progress_status: null,
+//   attendance_rate: 1,
+//   progress_id: null,
+// };
 
 // Declare Tests
 
@@ -125,7 +140,7 @@ describe('Profile Router', () => {
 
         it(`returns message "ProfileNotFound"`, () => {
           const expected = /ProfileNotFound/i;
-          const actual = res.body.error;
+          const actual = res.body.message;
 
           expect(actual).toMatch(expected);
         });
@@ -145,7 +160,8 @@ describe('Profile Router', () => {
           first_name: 'Brad',
           last_name: 'Bowman',
           email: 'brad.bowman@maildrop.cc',
-          role_id: 5,
+          role_id: 4,
+          // attendance_rate: 0.5,
         });
       });
 
@@ -153,7 +169,7 @@ describe('Profile Router', () => {
         expect(authRequired).toBeCalled();
       });
 
-      it('responds with status 201', async () => {
+      it('responds with status 201 Profile Created', async () => {
         const expected = 201;
         const actual = res.status;
 
@@ -173,10 +189,10 @@ describe('Profile Router', () => {
           first_name: 'Brad',
           is_active: null,
           last_name: 'Bowman',
-          profile_id: 'bradbowman',
+          // profile_id: 'k8kaq719',
           progress_id: null,
           progress_status: null,
-          role_id: 5,
+          role_id: 4,
         };
         const actual = res.body.profile;
 
@@ -188,17 +204,18 @@ describe('Profile Router', () => {
       describe('invalid first name', () => {
         describe('missing', () => {
           let res;
-          beforeAll(async () => {
-            res = await postNewUser({
+          beforeAll(() => {
+            res = postNewUser({
               profile_id: '9000',
+              // first_name: '',
               last_name: 'Lastname',
               email: 'realemail@maildrop.cc',
             });
           });
 
-          it.skip('responds with status 400', () => {
-            const expected = 400;
-            const actual = res.status;
+          it('responds with status 404', () => {
+            const expected = 404;
+            const actual = res;
 
             expect(actual).toBe(expected);
           });
@@ -215,8 +232,8 @@ describe('Profile Router', () => {
           const tooLongFirstName =
             'Lorem ipsum dolor sit amet lorem, consectetur porttitor.';
           let res;
-          beforeAll(async () => {
-            res = await postNewUser({
+          beforeAll(() => {
+            res = postNewUser({
               profile_id: '9000',
               first_name: tooLongFirstName,
               last_name: 'Lastname',
@@ -224,8 +241,8 @@ describe('Profile Router', () => {
             });
           });
 
-          it.skip('responds with status 400', () => {
-            const expected = 400;
+          it('responds with status 406', () => {
+            const expected = 406;
             const actual = res.status;
 
             expect(actual).toBe(expected);
@@ -243,8 +260,8 @@ describe('Profile Router', () => {
       describe('invalid last name', () => {
         describe('missing', () => {
           let res;
-          beforeAll(async () => {
-            res = await postNewUser({
+          beforeAll(() => {
+            res = postNewUser({
               profile_id: '9000',
               first_name: 'Firstname',
               email: 'realemail@maildrop.cc',
@@ -270,8 +287,8 @@ describe('Profile Router', () => {
           const tooLongLastName =
             'Lorem ipsum dolor sit amet, consectetur massa nunc.';
           let res;
-          beforeAll(async () => {
-            res = await postNewUser({
+          beforeAll(() => {
+            res = postNewUser({
               profile_id: '9000',
               first_name: 'Firstname',
               last_name: tooLongLastName,
@@ -279,18 +296,18 @@ describe('Profile Router', () => {
             });
           });
 
-          it.skip('responds with status 400', () => {
-            const expected = 400;
+          it.skip('responds with status 406', () => {
+            const expected = 406;
             const actual = res.status;
 
             expect(actual).toBe(expected);
           });
 
-          it.skip('returns message "last_name must be between 2-50 chars"', () => {
-            const expected = /last_name must be between 2-50 char/i;
+          it('returns message "last_name must be between 2-50 chars"', () => {
+            const expected = /last_name must be between 2-50 chars/i;
             const actual = res.body.message;
 
-            expect(actual).toMatch(expected);
+            expect(actual).toBe(expected);
           });
         });
       });
@@ -298,8 +315,8 @@ describe('Profile Router', () => {
       describe('invalid email', () => {
         describe('missing', () => {
           let res;
-          beforeAll(async () => {
-            res = await postNewUser({
+          beforeAll(() => {
+            res = postNewUser({
               profile_id: '9000',
               first_name: 'Firstname',
               last_name: 'Lastname',
@@ -323,8 +340,8 @@ describe('Profile Router', () => {
 
         describe('misformatted', () => {
           let res;
-          beforeAll(async () => {
-            res = await postNewUser({
+          beforeAll(() => {
+            res = postNewUser({
               profile_id: '9000',
               first_name: 'Firstname',
               last_name: 'Lastname',

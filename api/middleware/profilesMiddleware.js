@@ -1,6 +1,6 @@
 const { create } = require('../profile/profileModel');
 
-const createProfile = async (req, res, next) => {
+const createProfile = (req, res, next) => {
   const tempProfileId = Math.random().toString(36).slice(-8);
   req.body.profile_id = tempProfileId;
   const newProfile = {
@@ -11,7 +11,7 @@ const createProfile = async (req, res, next) => {
     is_active: true,
   };
   try {
-    const profile = await create(newProfile);
+    const profile = create(newProfile);
     req.profile = profile;
     next();
   } catch (err) {
