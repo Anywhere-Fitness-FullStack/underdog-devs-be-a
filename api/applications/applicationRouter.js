@@ -292,8 +292,8 @@ router.get('/profileId/:id', checkApplicationExists, checkRole, (req, res) => {
 
 router.post(
   '/new/:role',
-  validation(applicationSchema),
   createProfile,
+  validation(applicationSchema),
   cacheSignUpData,
   sendData,
   (req, res, next) => {
