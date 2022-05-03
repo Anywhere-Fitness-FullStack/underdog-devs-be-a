@@ -38,6 +38,8 @@ const cacheSignUpData = async (req, res, next) => {
     ...sharedFields,
     current_company: formData.current_company,
     current_position: formData.current_position,
+    commitment: formData.commitment,
+    referred_by: formData.referred_by,
   };
   const newMenteeApplication = {
     ...sharedFields,
