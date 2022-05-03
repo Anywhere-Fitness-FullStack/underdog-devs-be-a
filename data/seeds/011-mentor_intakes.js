@@ -12,6 +12,8 @@ const dummyData = [
     experience_level: 'expert',
     industry_knowledge: true,
     pair_programming: true,
+    commitment: 'yes',
+    referred_by: 'Facebook',
   },
   {
     profile_id: '9',
@@ -25,6 +27,8 @@ const dummyData = [
     experience_level: 'expert',
     industry_knowledge: true,
     job_help: true,
+    commitment: 'yes',
+    referred_by: 'Facebook',
   },
   {
     profile_id: '00u13omswyZM1xVya4x7',
@@ -40,6 +44,8 @@ const dummyData = [
     experience_level: 'expert',
     pair_programming: true,
     job_help: true,
+    commitment: 'yes',
+    referred_by: 'Facebook',
   },
 ];
 
